@@ -80,11 +80,11 @@ export default function SpendForm() {
 
   // Load from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem("auditai_form");
-    if (saved) {
-      setFormData(JSON.parse(saved));
-    }
-  }, []);
+  const saved = localStorage.getItem("auditai_form");
+  if (saved) {
+    setFormData(JSON.parse(saved)); // eslint-disable-line react-hooks/set-state-in-effect
+  }
+}, []);
 
   // Save to localStorage on every change
   useEffect(() => {
@@ -137,7 +137,7 @@ export default function SpendForm() {
       <div className="space-y-1">
         <h1 className="text-3xl font-bold">Audit AI</h1>
         <p className="text-muted-foreground">
-          Find out where you're overspending on AI tools — in 60 seconds.
+         Find out where you are overspending on AI tools — in 60 seconds.
         </p>
       </div>
 

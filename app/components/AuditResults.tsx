@@ -36,7 +36,7 @@ export default function AuditResults({ summary, onBack }: Props) {
           <span className="text-xl font-normal text-muted-foreground">/mo</span>
         </p>
         <p className="text-muted-foreground">
-          That's{" "}
+          That is{" "}
           <span className="font-semibold text-foreground">
             ${totalAnnualSaving.toFixed(0)}/year
           </span>{" "}
@@ -66,9 +66,9 @@ export default function AuditResults({ summary, onBack }: Props) {
       {/* Already optimal message for low savings */}
       {totalMonthlySaving < 100 && (
         <div className="rounded-xl bg-green-50 border border-green-200 p-4">
-          <p className="font-semibold text-green-900">You're spending well 👍</p>
+          <p className="font-semibold text-green-900">You are spending well 👍</p>
           <p className="text-sm text-green-800 mt-1">
-            Your AI stack looks fairly optimized. We'll notify you when new
+            Your AI stack looks fairly optimized. We will notify you when new
             optimizations apply to your tools.
           </p>
         </div>

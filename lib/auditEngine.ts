@@ -25,51 +25,6 @@ export interface AuditSummary {
   useCase: string;
 }
 
-// Official pricing as of May 2026 — see PRICING_DATA.md
-const PRICING = {
-  cursor: {
-    hobby: 0,
-    pro: 20,
-    business: 40,
-    enterprise: null, // custom
-  },
-  github_copilot: {
-    individual: 10,
-    business: 19,
-    enterprise: 39,
-  },
-  claude: {
-    free: 0,
-    pro: 20,
-    max: 100,
-    team: 30, // per seat
-    enterprise: null,
-    "api direct": null,
-  },
-  chatgpt: {
-    plus: 20,
-    team: 30, // per seat
-    enterprise: null,
-    "api direct": null,
-  },
-  anthropic_api: {
-    "pay as you go": null,
-  },
-  openai_api: {
-    "pay as you go": null,
-  },
-  gemini: {
-    pro: 19.99,
-    ultra: 249.99,
-    api: null,
-  },
-  windsurf: {
-    free: 0,
-    pro: 15,
-    teams: 35,
-  },
-};
-
 const TOOL_NAMES: Record<string, string> = {
   cursor: "Cursor",
   github_copilot: "GitHub Copilot",
@@ -92,12 +47,12 @@ function auditCursor(entry: ToolEntry): AuditResult {
   };
 
   if (plan === "hobby") {
-    return { ...base, recommendation: "You're on the free plan — no spend here.", recommendedAction: "No action needed", potentialSaving: 0, priority: "optimal" };
+    return { ...base, recommendation: "You are on the free plan — no spend here.", recommendedAction: "No action needed", potentialSaving: 0, priority: "optimal" };
   }
 
   if (plan === "pro" && seats <= 1) {
     if (monthlySpend > 20) {
-      return { ...base, recommendation: `You're overpaying. Cursor Pro is $20/seat — you have ${seats} seat.`, recommendedAction: "Check your billing for extra charges", potentialSaving: monthlySpend - 20, priority: "high" };
+      return { ...base, recommendation: `You are overpaying. Cursor Pro is $20/seat — you have ${seats} seat.`, recommendedAction: "Check your billing for extra charges", potentialSaving: monthlySpend - 20, priority: "high" };
     }
     return { ...base, recommendation: "Cursor Pro at $20/seat is correctly priced for a solo user.", recommendedAction: "No action needed", potentialSaving: 0, priority: "optimal" };
   }
@@ -107,7 +62,7 @@ function auditCursor(entry: ToolEntry): AuditResult {
   }
 
   if (monthlySpend > expectedSpend) {
-    return { ...base, recommendation: `You're spending $${monthlySpend} but expected is $${expectedSpend} for ${seats} seats on ${plan}.`, recommendedAction: "Review your billing", potentialSaving: monthlySpend - expectedSpend, priority: "medium" };
+    return { ...base, recommendation: `You are spending $${monthlySpend} but expected is $${expectedSpend} for ${seats} seats on ${plan}.`, recommendedAction: "Review your billing", potentialSaving: monthlySpend - expectedSpend, priority: "medium" };
   }
 
   return { ...base, recommendation: `Cursor ${plan} at $${monthlySpend}/mo for ${seats} seats is correctly priced.`, recommendedAction: "No action needed", potentialSaving: 0, priority: "optimal" };
@@ -153,7 +108,7 @@ function auditClaude(entry: ToolEntry, useCase: string): AuditResult {
   return { ...base, recommendation: `Claude ${plan} is a reasonable fit for your use case.`, recommendedAction: "No action needed", potentialSaving: 0, priority: "optimal" };
 }
 
-function auditChatGPT(entry: ToolEntry, useCase: string): AuditResult {
+function auditChatGPT(entry: ToolEntry): AuditResult {
   const { plan, monthlySpend, seats } = entry;
   const base: Omit<AuditResult, "recommendation" | "recommendedAction" | "potentialSaving" | "priority"> = {
     toolId: "chatgpt",
@@ -170,7 +125,7 @@ function auditChatGPT(entry: ToolEntry, useCase: string): AuditResult {
 }
 
 function auditWindsurf(entry: ToolEntry, useCase: string): AuditResult {
-  const { plan, monthlySpend, seats } = entry;
+  const { plan, monthlySpend } = entry;
   const base: Omit<AuditResult, "recommendation" | "recommendedAction" | "potentialSaving" | "priority"> = {
     toolId: "windsurf",
     toolName: "Windsurf",
@@ -179,14 +134,14 @@ function auditWindsurf(entry: ToolEntry, useCase: string): AuditResult {
   };
 
   if (useCase === "coding" && plan === "pro") {
-    return { ...base, recommendation: "For coding use, Cursor Pro ($20/seat) has more features and a larger plugin ecosystem than Windsurf Pro ($15/seat). Consider switching.", recommendedAction: "Evaluate Cursor Pro", potentialSaving: 0, priority: "low" };
+    return { ...base, recommendation: "For coding use, Cursor Pro ($20/seat) has a larger plugin ecosystem than Windsurf Pro ($15/seat). Consider switching.", recommendedAction: "Evaluate Cursor Pro", potentialSaving: 0, priority: "low" };
   }
 
   return { ...base, recommendation: `Windsurf ${plan} is reasonably priced for your use case.`, recommendedAction: "No action needed", potentialSaving: 0, priority: "optimal" };
 }
 
 function auditGemini(entry: ToolEntry): AuditResult {
-  const { plan, monthlySpend, seats } = entry;
+  const { plan, monthlySpend } = entry;
   const base: Omit<AuditResult, "recommendation" | "recommendedAction" | "potentialSaving" | "priority"> = {
     toolId: "gemini",
     toolName: "Gemini",
@@ -208,7 +163,7 @@ function auditApiDirect(entry: ToolEntry): AuditResult {
     toolName,
     currentPlan: "Pay as you go",
     currentSpend: entry.monthlySpend,
-    recommendation: `You're spending $${entry.monthlySpend}/mo on ${toolName} directly. If this is for internal tooling, Credex credits can reduce this cost by 20–40%.`,
+    recommendation: `You are spending $${entry.monthlySpend}/mo on ${toolName} directly. If this is for internal tooling, Credex credits can reduce this cost by 20-40%.`,
     recommendedAction: "Explore Credex credits",
     potentialSaving: Math.round(entry.monthlySpend * 0.3),
     priority: entry.monthlySpend > 100 ? "high" : "medium",
@@ -234,7 +189,7 @@ export function runAudit(
         case "cursor": return auditCursor(entry);
         case "github_copilot": return auditGithubCopilot(entry);
         case "claude": return auditClaude(entry, useCase);
-        case "chatgpt": return auditChatGPT(entry, useCase);
+        case "chatgpt": return auditChatGPT(entry);
         case "windsurf": return auditWindsurf(entry, useCase);
         case "gemini": return auditGemini(entry);
         case "anthropic_api":
