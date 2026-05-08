@@ -9,3 +9,4 @@
 **Blockers / what I'm stuck on:** None major today.
 
 **Plan for tomorrow:** Research and verify current pricing for all 8 tools → PRICING_DATA.md. Build the audit engine unit tests. Set up GitHub Actions CI.
+
