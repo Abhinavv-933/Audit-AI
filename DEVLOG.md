@@ -10,3 +10,16 @@
 
 **Plan for tomorrow:** Research and verify current pricing for all 8 tools → PRICING_DATA.md. Build the audit engine unit tests. Set up GitHub Actions CI.
 
+## Day 2 — 2026-05-08
+
+**Hours worked:** X
+
+**What I did:** Verified and corrected pricing data for all 8 tools. Wrote 7 unit tests for the audit engine. Set up GitHub Actions CI. Fixed lint errors — learned that ESLint treats apostrophes in JSX as errors and unused parameters need to be removed entirely rather than prefixed with underscore.
+
+**What I learned:** CI branch config must explicitly include master, not just main. Lint errors fail CI so they must be fixed before pushing.
+
+**Blockers / what I'm stuck on:** None.
+
+**Plan for tomorrow:** Anthropic API integration for AI summary, build the results page AI summary section, start ARCHITECTURE.md.
+
+
