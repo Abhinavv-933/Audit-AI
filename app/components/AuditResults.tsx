@@ -180,18 +180,16 @@ export default function AuditResults({ summary, onBack }: Props) {
         ← Edit my tools
       </Button>
       {showLeadModal && !leadCaptured && (
-       <LeadCaptureModal
-            totalMonthlySaving={totalMonthlySaving}
-            totalCurrentSpend={totalCurrentSpend}
-            teamSize={summary.teamSize}
-            useCase={summary.useCase}
-            onClose={() => setShowLeadModal(false)}
-            onSuccess={() => {
-            setLeadCaptured(true);
-            setShowLeadModal(false);
-            }}
-        />
-      )}
+          <LeadCaptureModal
+               summary={summary}
+               onClose={() => setShowLeadModal(false)}
+               onSuccess={(auditId: string) => {
+               setLeadCaptured(true);
+               setShowLeadModal(false);
+               window.location.href = `/audit/${auditId}`;
+              }}
+           />
+       )}
     </div>
   );
 }

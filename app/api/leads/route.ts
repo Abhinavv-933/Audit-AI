@@ -12,9 +12,10 @@ export async function POST(request: NextRequest) {
       useCase,
       totalMonthlySaving,
       totalCurrentSpend,
+      auditData,
     } = body;
 
-    // Basic honeypot check
+    // Honeypot check
     if (body.website) {
       return NextResponse.json({ success: true });
     }
@@ -27,21 +28,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { error } = await supabase.from("leads").insert([
-      {
-        email,
-        company_name: companyName,
-        role,
-        team_size: teamSize,
-        use_case: useCase,
-        total_monthly_saving: totalMonthlySaving,
-        total_current_spend: totalCurrentSpend,
-      },
-    ]);
+    const { data, error } = await supabase
+      .from("leads")
+      .insert([
+        {
+          email,
+          company_name: companyName,
+          role,
+          team_size: teamSize,
+          use_case: useCase,
+          total_monthly_saving: totalMonthlySaving,
+          total_current_spend: totalCurrentSpend,
+          audit_data: auditData,
+        },
+      ])
+      .select("audit_id")
+      .single();
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, auditId: data.audit_id });
   } catch (error) {
     console.error("Lead capture error:", error);
     return NextResponse.json(

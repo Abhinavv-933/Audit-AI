@@ -5,24 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AuditSummary } from "@/lib/auditEngine";
 
 interface Props {
-  totalMonthlySaving: number;
-  totalCurrentSpend: number;
-  teamSize: number;
-  useCase: string;
+  summary: AuditSummary;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (auditId: string) => void;
 }
 
-export default function LeadCaptureModal({
-  totalMonthlySaving,
-  totalCurrentSpend,
-  teamSize,
-  useCase,
-  onClose,
-  onSuccess,
-}: Props) {
+export default function LeadCaptureModal({ summary, onClose, onSuccess }: Props) {
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [role, setRole] = useState("");
@@ -46,17 +37,26 @@ export default function LeadCaptureModal({
           email,
           companyName,
           role,
-          teamSize: String(teamSize),
-          useCase,
-          totalMonthlySaving,
-          totalCurrentSpend,
-          website: "", // honeypot field
+          teamSize: String(summary.teamSize),
+          useCase: summary.useCase,
+          totalMonthlySaving: summary.totalMonthlySaving,
+          totalCurrentSpend: summary.totalCurrentSpend,
+          auditData: {
+            results: summary.results,
+            totalMonthlySaving: summary.totalMonthlySaving,
+            totalAnnualSaving: summary.totalAnnualSaving,
+            totalCurrentSpend: summary.totalCurrentSpend,
+            teamSize: summary.teamSize,
+            useCase: summary.useCase,
+          },
+          website: "",
         }),
       });
 
       if (!response.ok) throw new Error("Failed to submit");
 
-      onSuccess();
+      const data = await response.json();
+      onSuccess(data.auditId);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -72,13 +72,12 @@ export default function LeadCaptureModal({
           <p className="text-sm text-muted-foreground">
             We found{" "}
             <span className="font-semibold text-foreground">
-              ${totalMonthlySaving}/mo
+              ${summary.totalMonthlySaving}/mo
             </span>{" "}
             in potential savings. Enter your email to save this audit.
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Honeypot field — hidden from real users */}
           <input
             type="text"
             name="website"
