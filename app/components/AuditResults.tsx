@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { AuditSummary } from "@/lib/auditEngine";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import LeadCaptureModal from "./LeadCaptureModal";
 
 interface Props {
   summary: AuditSummary;
@@ -40,6 +41,8 @@ export default function AuditResults({ summary, onBack }: Props) {
   const { results, totalMonthlySaving, totalAnnualSaving, totalCurrentSpend } = summary;
   const [aiSummary, setAiSummary] = useState<string | null>(null);
   const [summaryLoading, setSummaryLoading] = useState(true);
+  const [showLeadModal, setShowLeadModal] = useState(true);
+  const [leadCaptured, setLeadCaptured] = useState(false);
 
   useEffect(() => {
     async function fetchSummary() {
@@ -172,10 +175,23 @@ export default function AuditResults({ summary, onBack }: Props) {
           </Card>
         ))}
       </div>
-
+      
       <Button variant="outline" onClick={onBack} className="w-full">
         ← Edit my tools
       </Button>
+      {showLeadModal && !leadCaptured && (
+       <LeadCaptureModal
+            totalMonthlySaving={totalMonthlySaving}
+            totalCurrentSpend={totalCurrentSpend}
+            teamSize={summary.teamSize}
+            useCase={summary.useCase}
+            onClose={() => setShowLeadModal(false)}
+            onSuccess={() => {
+            setLeadCaptured(true);
+            setShowLeadModal(false);
+            }}
+        />
+      )}
     </div>
   );
 }
