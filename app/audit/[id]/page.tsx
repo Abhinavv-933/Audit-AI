@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import { AuditSummary } from "@/lib/auditEngine";
 import { Metadata } from "next";
+import Link from "next/link";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -75,9 +76,9 @@ export default async function AuditPage({ params }: Props) {
       <div className="rounded-xl bg-blue-50 border border-blue-200 p-4 text-center">
         <p className="text-sm text-blue-800">
           This is a shared audit result.{" "}
-          <a href="/" className="font-semibold underline">
-            Run your own free audit
-          </a>
+          <Link href="/" className="font-semibold underline">
+             Run your own free audit
+          </Link>
         </p>
       </div>
 
@@ -120,14 +121,14 @@ export default async function AuditPage({ params }: Props) {
           <p className="text-sm text-blue-800">
             Credex sells discounted AI credits at 20-40% below retail.
           </p>
-          <a
+          <Link
             href="https://credex.rocks"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg"
           >
             Learn about Credex 
-          </a>
+          </Link>
         </div>
       )}
 
@@ -171,12 +172,12 @@ export default async function AuditPage({ params }: Props) {
         <p className="text-sm text-muted-foreground">
           Run your free AI spend audit in 60 seconds.
         </p>
-        <a
+        <Link
           href="/"
           className="inline-block bg-black text-white text-sm font-medium px-6 py-3 rounded-lg hover:bg-gray-800"
         >
           Run my free audit
-        </a>
+        </Link>
       </div>
     </div>
   );
