@@ -41,7 +41,7 @@ export default function AuditResults({ summary, onBack }: Props) {
   const { results, totalMonthlySaving, totalAnnualSaving, totalCurrentSpend } = summary;
   const [aiSummary, setAiSummary] = useState<string | null>(null);
   const [summaryLoading, setSummaryLoading] = useState(true);
-  const [showLeadModal, setShowLeadModal] = useState(true);
+  const [showLeadModal, setShowLeadModal] = useState(false);
   const [leadCaptured, setLeadCaptured] = useState(false);
 
   useEffect(() => {
@@ -66,6 +66,13 @@ export default function AuditResults({ summary, onBack }: Props) {
 
     fetchSummary();
   }, [summary]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLeadModal(true);
+     }, 3000);
+     return () => clearTimeout(timer);
+   }, []);
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
