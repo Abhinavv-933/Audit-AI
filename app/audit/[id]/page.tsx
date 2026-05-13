@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AuditSummary } from "@/lib/auditEngine";
 import { Metadata } from "next";
 import Link from "next/link";
+import ShareButton from "@/app/components/ShareButton";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -100,6 +101,8 @@ export default async function AuditPage({ params }: Props) {
           Current spend: ${summary.totalCurrentSpend}/mo
         </p>
       </div>
+
+      <ShareButton />
 
       {/* Fallback summary on shared page */}
       <div className="rounded-xl border p-6 space-y-2">
