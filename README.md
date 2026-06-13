@@ -1,6 +1,6 @@
 # Audit AI
 
-A free web app that audits your AI tool spend and tells you exactly where your team is overspending — in 60 seconds. Built as a lead-generation tool for [Credex](https://credex.rocks), which sells discounted AI credits to startups.
+A free web app that audits your AI tool spend and tells you exactly where your team is overspending — in 60 seconds. Built as a lead-generation tool for [Credex], which sells discounted AI credits to startups.
 
 **Live:** https://audit-ai-hazel.vercel.app  
 **Repo:** https://github.com/Abhinavv-933/Audit-AI
